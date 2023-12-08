@@ -9,6 +9,8 @@ services
 services.AddDbContext<AppDbContext>(
         options => options.UseSqlServer("name=SqlServer"));
 
+services.AddScoped<DapperService>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
