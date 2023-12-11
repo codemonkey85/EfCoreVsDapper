@@ -6,7 +6,7 @@ public partial class Home
 
     private List<User> EfCoreUsers { get; set; } = [];
 
-    private InputText InputTextName { get; set; }
+    private InputText InputTextName { get; set; } = default!;
 
     private string Name { get; set; } = string.Empty;
 
