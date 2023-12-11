@@ -9,11 +9,21 @@ public partial class Home
 
     private string Email { get; set; } = string.Empty;
 
+    private async Task Refresh(bool clearNames = false)
+    {
+        if (clearNames)
+        {
+            Name = Email = string.Empty;
+        }
+
+        DapperUsers = await UserRepository.GetAllUsers();
+        EfCoreUsers = await AppDbContext.Users.ToListAsync();
+    }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        DapperUsers = await UserRepository.GetAllUsers();
-        EfCoreUsers = await AppDbContext.Users.ToListAsync();
+        await Refresh();
     }
 
     private async Task AddUserEfCore()
@@ -28,10 +38,7 @@ public partial class Home
         await AppDbContext.AddAsync(user);
         await AppDbContext.SaveChangesAsync();
 
-        Name = Email = string.Empty;
-
-        DapperUsers = await UserRepository.GetAllUsers();
-        EfCoreUsers = await AppDbContext.Users.ToListAsync();
+        await Refresh(clearNames: true);
     }
 
     private async Task AddUserDapper()
@@ -45,10 +52,7 @@ public partial class Home
 
         await UserRepository.AddUser(user);
 
-        Name = Email = string.Empty;
-
-        DapperUsers = await UserRepository.GetAllUsers();
-        EfCoreUsers = await AppDbContext.Users.ToListAsync();
+        await Refresh(clearNames: true);
     }
 
     private async Task DeleteUserEfCore(int userId)
@@ -61,14 +65,12 @@ public partial class Home
             await AppDbContext.SaveChangesAsync();
         }
 
-        DapperUsers = await UserRepository.GetAllUsers();
-        EfCoreUsers = await AppDbContext.Users.ToListAsync();
+        await Refresh();
     }
 
     private async Task DeleteUserDapper(int userId)
     {
         await UserRepository.DeleteUser(userId);
-        DapperUsers = await UserRepository.GetAllUsers();
-        EfCoreUsers = await AppDbContext.Users.ToListAsync();
+        await Refresh();
     }
 }
