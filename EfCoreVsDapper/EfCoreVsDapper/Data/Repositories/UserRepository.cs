@@ -1,6 +1,4 @@
-﻿using Dapper;
-
-namespace EfCoreVsDapper.Data.Repositories;
+﻿namespace EfCoreVsDapper.Data.Repositories;
 
 public class UserRepository(AppDapperContext context) : IUserRepository
 {

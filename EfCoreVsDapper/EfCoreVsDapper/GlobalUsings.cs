@@ -1,8 +1,11 @@
 ﻿global using System.ComponentModel.DataAnnotations.Schema;
 global using System.Data;
+global using Dapper;
 global using EfCoreVsDapper.Components;
 global using EfCoreVsDapper.Data;
 global using EfCoreVsDapper.Data.Models;
 global using EfCoreVsDapper.Data.Repositories;
+global using Microsoft.AspNetCore.Components;
+global using Microsoft.AspNetCore.Components.Forms;
 global using Microsoft.Data.SqlClient;
 global using Microsoft.EntityFrameworkCore;

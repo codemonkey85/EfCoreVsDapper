@@ -2,8 +2,11 @@ namespace EfCoreVsDapper.Components.Pages;
 
 public partial class Home
 {
-    List<User> DapperUsers = [];
-    List<User> EfCoreUsers = [];
+    private List<User> DapperUsers { get; set; } = [];
+
+    private List<User> EfCoreUsers { get; set; } = [];
+
+    private InputText InputTextName { get; set; }
 
     private string Name { get; set; } = string.Empty;
 
@@ -11,13 +14,17 @@ public partial class Home
 
     private async Task Refresh(bool clearNames = false)
     {
+        DapperUsers = await UserRepository.GetAllUsers();
+        EfCoreUsers = await AppDbContext.Users.ToListAsync();
+
         if (clearNames)
         {
             Name = Email = string.Empty;
+            if (InputTextName is { Element: not null })
+            {
+                await InputTextName.Element.Value.FocusAsync();
+            }
         }
-
-        DapperUsers = await UserRepository.GetAllUsers();
-        EfCoreUsers = await AppDbContext.Users.ToListAsync();
     }
 
     protected override async Task OnInitializedAsync()
