@@ -1,27 +1,50 @@
 ﻿@page "/"
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
-@if (DapperUsers is { Count: > 0 })
-{
-    UserList(DapperUsers);
-}
+<div>
+    <InputText @bind-Value="Name"
+               placeholder="Name" />
 
-@if (EfCoreUsers is { Count: > 0 })
-{
-    UserList(EfCoreUsers);
-}
+    <InputText @bind-Value="Email"
+               placeholder="Email" />
+
+    <button @onclick="AddUserEfCore" type="button">
+        Add User (EF Core)
+    </button>
+
+    <button @onclick="AddUserDapper" type="button">
+        Add User (Dapper)
+    </button>
+</div>
+
+@UserList(nameof(DapperUsers), DapperUsers)
+@UserList(nameof(EfCoreUsers), EfCoreUsers)
 
 @code {
-    RenderFragment UserList(List<User> users) =>
+    RenderFragment UserList(string listName, List<User> users) =>
     @<div>
-        <h2>@users.Count</h2>
+        <h2>
+            @listName count: @users.Count
+        </h2>
+
         <ul>
             @foreach (var user in users)
         {
-            <li>@user.Name</li>
+            <li>
+                @user.ToString()
+            </li>
+
+            <button @onclick="async () => await DeleteUserEfCore(user.Id)">
+                Remove (EF Core)
+            </button>
+
+            <button @onclick="async () => await DeleteUserDapper(user.Id)">
+                Remove (Dapper)
+            </button>
         }
         </ul>
     </div>;
