@@ -9,7 +9,10 @@ services
 services.AddDbContext<AppDbContext>(
         options => options.UseSqlServer("name=SqlServer"));
 
-services.AddScoped<DapperService>();
+services
+    .AddSingleton<AppDapperContext>()
+    .AddScoped<IUserRepository, UserRepository>();
+
 
 var app = builder.Build();
 

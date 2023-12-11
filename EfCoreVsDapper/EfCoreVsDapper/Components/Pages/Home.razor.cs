@@ -8,7 +8,7 @@ public partial class Home
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        DapperUsers = (await DapperService.GetUsersAsync()).ToList();
+        DapperUsers = await UserRepository.GetAllUsers();
         EfCoreUsers = await AppDbContext.Users.ToListAsync();
     }
 }
